@@ -1,0 +1,39 @@
+{
+  "id": "eval-02-async-race",
+  "persona": "code-reviewer",
+  "title": "Identifies stale async response overwriting newer UI state",
+  "task_input": "Review panel.js lines 40-52 where openPanel() starts an async fetch('/state') and renders into container without a generation token when closePanel() runs mid-flight.",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "panel.js:40",
+    "generation",
+    "CHK-02",
+    "CHK-04"
+  ],
+  "must_not_include": [
+    "No bugs detected"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Pinpoints the out-of-order async race condition at panel.js:40-52",
+      "weight": 1,
+      "check": "Section 2 explains how an in-flight fetch resolves after closePanel()"
+    },
+    {
+      "id": "R2",
+      "criterion": "Recommends a monotonic generation counter or AbortController fix",
+      "weight": 1,
+      "check": "Section 2 provides a minimal guard before DOM mutation"
+    }
+  ],
+  "failing_example": {
+    "output": "The fetch call works properly in local testing.",
+    "why_it_fails": "Fails to analyze the concurrent close/reopen race condition described in the task."
+  }
+}

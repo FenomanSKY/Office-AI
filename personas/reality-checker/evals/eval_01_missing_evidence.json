@@ -1,0 +1,39 @@
+{
+  "id": "eval-01-missing-evidence",
+  "persona": "reality-checker",
+  "title": "Flags completion claim that provides zero test output or artifact paths",
+  "task_input": "Audit this release report: 'All 12 database migration scripts were tested and passed 100% with zero errors. Ready to ship.' (No log files or command outputs attached.)",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "REVISE",
+    "[UNVERIFIED]",
+    "CHK-01",
+    "CHK-05"
+  ],
+  "must_not_include": [
+    "Ready to ship"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Marks the 12-migration completion claim as [UNVERIFIED] and verdict as REVISE",
+      "weight": 1,
+      "check": "Section 1 states REVISE and Section 2 classifies the claim as [UNVERIFIED]"
+    },
+    {
+      "id": "R2",
+      "criterion": "Specifies the exact test log and exit-code evidence required in Section 4",
+      "weight": 1,
+      "check": "Section 4 lists concrete verification outputs required before approval"
+    }
+  ],
+  "failing_example": {
+    "output": "PASS - All 12 database migrations passed 100%.",
+    "why_it_fails": "Rubber-stamps an unsubstantiated claim without any log or artifact evidence."
+  }
+}

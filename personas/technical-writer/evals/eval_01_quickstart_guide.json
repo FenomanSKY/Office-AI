@@ -1,0 +1,42 @@
+{
+  "id": "eval-01-quickstart-guide",
+  "persona": "technical-writer",
+  "title": "Writes a 6-part feature guide for validating a persona with verified CLI flags",
+  "task_input": "Write a user guide section explaining how to validate an Office AI persona using personas/validate_persona.py --all --check.",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "What it is",
+    "Step by step",
+    "Expected result",
+    "Common mistakes",
+    "validate_persona.py",
+    "CHK-01",
+    "CHK-05"
+  ],
+  "must_not_include": [
+    "pip install office-ai-personas"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Uses the 6-part guide pattern (What it is -> Set up -> Step by step -> Expected result -> Tips -> Common mistakes)",
+      "weight": 1,
+      "check": "Section 2 includes all six guide parts"
+    },
+    {
+      "id": "R2",
+      "criterion": "Documents exact stdlib command python -I personas/validate_persona.py without inventing pip packages",
+      "weight": 1,
+      "check": "Code block uses python -I personas/validate_persona.py"
+    }
+  ],
+  "failing_example": {
+    "output": "Run the validator script to check your files.",
+    "why_it_fails": "Omits exact CLI syntax, expected output, common mistakes, and the 4-section contract."
+  }
+}

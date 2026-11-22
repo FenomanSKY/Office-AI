@@ -1,0 +1,45 @@
+{
+  "id": "eval-01-core-task",
+  "persona": "{{PERSONA_ID}}",
+  "title": "Core domain deliverable follows strict output contract with evidence",
+  "task_input": "Analyze the provided module specification for missing error handling and produce a structured review.",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "Executive Summary",
+    "Findings & Deliverables",
+    "CHK-01",
+    "CHK-05"
+  ],
+  "must_not_include": [
+    "TODO: fill in later"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Includes all four required output contract sections",
+      "weight": 1,
+      "check": "All expected_sections headings exist in order"
+    },
+    {
+      "id": "R2",
+      "criterion": "Cites concrete evidence for each finding",
+      "weight": 1,
+      "check": "Section 2 contains numbered findings with explicit references"
+    },
+    {
+      "id": "R3",
+      "criterion": "Completes checklist self-audit including safety check CHK-05",
+      "weight": 1,
+      "check": "Section 3 references CHK-01 through CHK-05"
+    }
+  ],
+  "failing_example": {
+    "output": "Everything looks fine to me. No issues found.",
+    "why_it_fails": "Omits all four required contract sections, provides zero evidence citations, and skips checklist verification."
+  }
+}

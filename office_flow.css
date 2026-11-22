@@ -1,0 +1,789 @@
+/* [Diubah oleh Gemini - 2026-11-21] Gaya panel Alur V16, legenda warna+pola aksesibel, pengaturan alur, dan bagian Hook Office AI di Pusat Setup */
+
+/* ===== Dialog container & scroll containment ===== */
+#panel.flow16-dialog {
+  width: min(1040px, 95vw);
+  max-width: 95vw;
+  max-height: 92vh;
+  overscroll-behavior: contain;
+}
+
+dialog:modal {
+  overscroll-behavior: contain;
+}
+
+dialog::backdrop {
+  overflow: hidden;
+  overscroll-behavior: contain;
+}
+
+.flow16-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* ===== Top summary & toolbar ===== */
+.flow16-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px 14px;
+  flex-wrap: wrap;
+  padding-bottom: 12px;
+  border-bottom: 1px solid var(--line);
+}
+
+.flow16-toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.flow16-toolbar-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.flow16-stat-strip {
+  display: inline-flex;
+  align-items: center;
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.flow16-stat-cell {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  padding: 5px 10px;
+  font-size: 12px;
+  color: var(--muted);
+}
+
+.flow16-stat-cell + .flow16-stat-cell {
+  border-inline-start: 1px solid var(--line);
+}
+
+.flow16-stat-cell strong {
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--ink);
+}
+
+.flow16-stat-cell.is-active strong {
+  color: var(--green);
+}
+
+.flow16-filter-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 560;
+}
+
+.flow16-filter-label select {
+  min-height: 32px;
+  padding-block: 4px;
+  font-size: 12px;
+}
+
+.flow16-toggle-btn {
+  min-height: 32px;
+  padding: 5px 10px;
+  font-size: 12px;
+}
+
+/* ===== Shared SVG line-pattern swatch (color + solid/dashed/dotted) ===== */
+.flow16-swatch {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+/* V18 [Diubah oleh Gemini - 2026-11-21] Swatch sinar bercahaya & lencana pola aksesibilitas pada label simpul 3D */
+.flow16-swatch-svg {
+  display: block;
+  width: 38px;
+  height: 14px;
+  flex-shrink: 0;
+  forced-color-adjust: none;
+}
+
+.office-flow-label {
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.office-flow-badge {
+  display: block;
+  width: 18px;
+  height: 10px;
+  flex-shrink: 0;
+  forced-color-adjust: none;
+}
+
+.office-flow-label[data-status="failed"] {
+  box-shadow: 0 0 0 1px rgba(235, 38, 62, 0.35), 0 2px 8px rgba(10, 18, 24, 0.32);
+}
+
+.flow16-pattern-tag {
+  font-size: 11px;
+  color: var(--muted);
+  padding: 1px 6px;
+  border-radius: 4px;
+  background: var(--surface-alt);
+  border: 1px solid var(--line);
+  white-space: nowrap;
+}
+
+/* ===== Accessible disclosure / accordion (<details>) ===== */
+.flow16-disclosure {
+  margin: 0;
+  border: 1px solid var(--line);
+  border-radius: var(--r);
+  background: var(--surface);
+  overflow: hidden;
+}
+
+.flow16-disclosure > summary {
+  list-style: none;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 14px;
+  cursor: pointer;
+  user-select: none;
+  color: var(--ink);
+  min-block-size: 40px;
+}
+
+.flow16-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.flow16-disclosure > summary:hover {
+  background: var(--hover);
+}
+
+.flow16-disclosure > summary::before {
+  content: '';
+  inline-size: 14px;
+  block-size: 14px;
+  flex-shrink: 0;
+  background-color: var(--muted);
+  -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat center / contain;
+  mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round' d='M4 6l4 4 4-4'/%3E%3C/svg%3E") no-repeat center / contain;
+  rotate: -90deg;
+}
+
+:dir(rtl) .flow16-disclosure > summary::before {
+  rotate: 90deg;
+}
+
+.flow16-disclosure[open] > summary::before {
+  rotate: 0deg;
+}
+
+.flow16-disclosure::details-content {
+  interpolate-size: allow-keywords;
+  overflow: clip;
+  contain: layout;
+}
+
+.flow16-disclosure:not([open])::details-content {
+  block-size: 0;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .flow16-disclosure > summary::before {
+    transition: rotate 180ms var(--ease);
+  }
+  .flow16-disclosure::details-content {
+    transition: block-size 220ms var(--ease), content-visibility 220ms var(--ease), display 220ms var(--ease);
+    transition-behavior: allow-discrete;
+  }
+}
+
+/* ===== Collapsible Legend ===== */
+.flow16-legend-summary-title {
+  font-size: 13px;
+  font-weight: 640;
+  color: var(--ink);
+}
+
+.flow16-legend-summary-hint {
+  font-size: 11.5px;
+  color: var(--muted);
+  margin-inline-start: auto;
+}
+
+.flow16-legend[open] .flow16-legend-summary-hint {
+  display: none;
+}
+
+.flow16-legend-body {
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  background: var(--surface-alt);
+}
+
+.flow16-legend-top {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.flow16-legend-col {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 0;
+}
+
+.flow16-legend-heading {
+  margin: 0 0 2px;
+  font-size: 12px;
+  font-weight: 680;
+  color: var(--ink);
+}
+
+.flow16-legend-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 5px 8px;
+}
+
+.flow16-legend-list.is-personas {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.flow16-legend-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  background: var(--surface);
+  border: 1px solid var(--line);
+  font-size: 12px;
+  color: var(--ink);
+  min-width: 0;
+}
+
+.flow16-legend-name {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
+/* ===== Flow List & Expandable Delegation Trees ===== */
+.flow16-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flow16-item-summary {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 10px;
+  width: 100%;
+  min-width: 0;
+}
+
+.flow16-item-main {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.flow16-item-title {
+  font-size: 13.5px;
+  font-weight: 640;
+  color: var(--ink);
+  overflow-wrap: anywhere;
+}
+
+.flow16-item-sub {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.flow16-item-right {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+  flex-shrink: 0;
+}
+
+.flow16-duration {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink);
+  font-variant-numeric: tabular-nums;
+  min-inline-size: 46px;
+  text-align: end;
+}
+
+.flow16-source-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  white-space: nowrap;
+  border: 1px solid var(--v12-neu-line);
+  background: var(--v12-neu-bg);
+  color: var(--v12-neu-ink);
+}
+
+.flow16-source-badge.is-realtime {
+  background: var(--v12-pos-bg);
+  border-color: var(--v12-pos-line);
+  color: var(--v12-pos-ink);
+}
+
+.flow16-source-badge.is-delayed {
+  background: var(--v12-warn-bg);
+  border-color: var(--v12-warn-line);
+  color: var(--v12-warn-ink);
+}
+
+.flow16-item-body {
+  padding: 12px 14px 14px;
+  border-top: 1px solid var(--line);
+  background: var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flow16-tree {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flow16-tree-children {
+  list-style: none;
+  margin: 6px 0 0;
+  padding-inline-start: 22px;
+  border-inline-start: 2px solid var(--line);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.flow16-node-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 7px 10px;
+  border-radius: var(--r-s);
+  border: 1px solid var(--line);
+  background: var(--surface);
+  font-size: 12.5px;
+}
+
+.flow16-node-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  min-width: 0;
+}
+
+.flow16-node-name {
+  font-weight: 640;
+  color: var(--ink);
+}
+
+.flow16-node-role {
+  font-size: 11.5px;
+  color: var(--muted);
+}
+
+.flow16-node-right {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  margin-inline-start: auto;
+}
+
+.flow16-return-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 7px;
+  border-radius: 999px;
+  font-size: 11px;
+  font-weight: 600;
+  background: var(--v12-pos-bg);
+  border: 1px solid var(--v12-pos-line);
+  color: var(--v12-pos-ink);
+  white-space: nowrap;
+}
+
+.flow16-inferred-tag {
+  font-size: 11px;
+  padding: 1px 6px;
+  border-radius: 4px;
+  border: 1px dashed var(--v12-warn-line);
+  background: var(--v12-warn-bg);
+  color: var(--v12-warn-ink);
+  white-space: nowrap;
+}
+
+.flow16-meta-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px 14px;
+  flex-wrap: wrap;
+  font-size: 11.5px;
+  color: var(--muted);
+  padding-top: 6px;
+  border-top: 1px solid var(--line);
+}
+
+.flow16-meta-bar code {
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  font-size: 11px;
+  color: var(--ink);
+  background: var(--surface);
+  border: 1px solid var(--line);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+/* ===== Empty State ===== */
+.flow16-empty {
+  padding: 20px;
+  border: 1px dashed var(--line);
+  border-radius: var(--r);
+  background: var(--surface-alt);
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.flow16-empty h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.flow16-empty p {
+  margin: 0;
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+  max-inline-size: 68ch;
+}
+
+/* ===== Settings -> Flow Tab & Editable Subagent Mapping Table ===== */
+.flow16-settings-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.flow16-settings-section fieldset {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  flex-wrap: nowrap;
+  gap: 10px;
+  margin: 0;
+  inline-size: 100%;
+}
+
+.flow16-settings-section .flow16-legend-body {
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+
+.flow16-table-wrap {
+  display: block;
+  inline-size: 100%;
+  width: 100%;
+  overflow: auto;
+  max-inline-size: 100%;
+  max-block-size: 320px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  background: var(--surface);
+  container-type: inline-size;
+}
+
+.flow16-map-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  table-layout: auto;
+  font-size: 12.5px;
+}
+
+.flow16-map-table thead {
+  position: sticky;
+  inset-block-start: 0;
+  z-index: 1;
+  background: var(--surface-alt);
+}
+
+.flow16-map-table th {
+  padding: 8px 10px;
+  font-size: 11.5px;
+  font-weight: 640;
+  color: var(--muted);
+  border-bottom: 1px solid var(--line);
+  text-align: start;
+}
+
+.flow16-map-table td {
+  padding: 7px 10px;
+  border-bottom: 1px solid var(--line);
+  color: var(--ink);
+  vertical-align: middle;
+}
+
+.flow16-map-table tbody tr:last-child td {
+  border-bottom: 0;
+}
+
+.flow16-map-table select,
+.flow16-map-table input[type="text"] {
+  width: 100%;
+  min-height: 30px;
+  padding: 4px 8px;
+  font-size: 12px;
+}
+
+.flow16-map-add-row {
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.flow16-map-add-row .v12-field {
+  flex: 1 1 170px;
+}
+
+.flow16-settings-foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+@container (width < 520px) {
+  .flow16-map-table,
+  .flow16-map-table thead,
+  .flow16-map-table tbody,
+  .flow16-map-table tr,
+  .flow16-map-table td {
+    display: block;
+  }
+  .flow16-map-table thead {
+    display: none;
+  }
+  .flow16-map-table tbody tr {
+    padding: 8px;
+    border-bottom: 1px solid var(--line);
+  }
+  .flow16-map-table td {
+    padding: 4px 0;
+    border: 0;
+  }
+}
+
+/* ===== Setup Center: Hook Office AI Section ===== */
+.flow16-hooks-section {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  border-inline-start: 3px solid var(--accent);
+}
+
+.flow16-hooks-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+.flow16-hooks-head h3 {
+  margin: 0;
+  font-size: 15px;
+  color: var(--ink);
+}
+
+.flow16-hooks-controls {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-items: end;
+}
+
+.flow16-hooks-cards {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+
+.flow16-hook-card {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  background: var(--surface-alt);
+}
+
+.flow16-hook-card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.flow16-hook-card-head strong {
+  font-size: 13.5px;
+  color: var(--ink);
+}
+
+.flow16-hook-target {
+  margin: 0;
+  font-size: 11.5px;
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Consolas, monospace;
+  overflow-wrap: anywhere;
+}
+
+.flow16-hook-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px;
+  border: 1px solid var(--line);
+  border-radius: var(--r-s);
+  background: var(--paper);
+}
+
+.flow16-hook-preview-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.flow16-hook-preview pre {
+  margin: 0;
+  padding: 10px;
+  max-block-size: 240px;
+  overflow: auto;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--surface);
+  color: var(--ink);
+  font: 11.5px/1.45 ui-monospace, SFMono-Regular, Consolas, monospace;
+  white-space: pre;
+  tab-size: 2;
+}
+
+.flow16-hook-confirm {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 10px 12px;
+  border-radius: var(--r-s);
+  border: 1px solid var(--v12-warn-line);
+  background: var(--v12-warn-bg);
+  color: var(--v12-warn-ink);
+  font-size: 12.5px;
+}
+
+.flow16-hook-confirm p {
+  margin: 0;
+}
+
+/* ===== Responsive & High Contrast ===== */
+@media (max-width: 860px) {
+  .flow16-legend-top,
+  .flow16-legend-list,
+  .flow16-legend-list.is-personas,
+  .flow16-hooks-controls,
+  .flow16-hooks-cards {
+    grid-template-columns: 1fr;
+  }
+  .flow16-item-summary {
+    grid-template-columns: auto minmax(0, 1fr);
+  }
+  .flow16-item-right {
+    grid-column: 1 / -1;
+    justify-content: flex-start;
+  }
+}
+
+@media (pointer: coarse) {
+  .flow16-toggle-btn,
+  .flow16-disclosure > summary {
+    min-block-size: 44px;
+  }
+}
+
+@media (forced-colors: active) {
+  .flow16-disclosure,
+  .flow16-node-row,
+  .flow16-source-badge,
+  .flow16-pattern-tag,
+  .flow16-hook-card,
+  .flow16-hook-confirm {
+    border: 1px solid CanvasText;
+  }
+  .flow16-disclosure > summary::before {
+    background-color: ButtonText;
+  }
+}

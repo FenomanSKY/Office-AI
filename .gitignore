@@ -1,0 +1,20 @@
+# Office AI (publik)
+node_modules/
+Aplikasi/
+cadangan/
+logs/
+shots/
+runtime/
+__pycache__/
+*.lnk
+debug.log
+.env
+secrets_local.json
+# data pengguna dan hasil uji lokal
+*.local.json
+qa/v6c-test-*/
+qa/newuser-sim/
+qa/*results*.json
+qa/*.png
+personas/runs/
+personas/_exports/

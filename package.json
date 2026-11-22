@@ -1,0 +1,16 @@
+{
+  "name": "office-ai",
+  "version": "1.0.0",
+  "license": "MIT",
+  "author": "FenomanSKY",
+  "description": "Local 3D voxel office for monitoring and orchestrating AI agents",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "node pack.js"
+  },
+  "devDependencies": {
+    "@electron/packager": "18.3.6",
+    "electron": "40.10.2"
+  }
+}

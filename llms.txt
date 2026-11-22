@@ -1,0 +1,37 @@
+# [Diubah oleh Gemini - 2026-11-21] Compact LLM index for Office AI
+# Office AI
+
+> Local-first 3D voxel office (Electron + Node.js + Three.js) for monitoring AI coding agents, orchestrating multi-stage Video Short pipelines with human approval gates, hosting an embedded YouTube Studio Manager dashboard, tracking read-only MetaTrader 5 & office finances, and running direct local CLI agent prompts.
+
+## Core Documentation
+- [README.md](README.md): Project overview, visual previews, 5-step Quick Start, feature breakdown, security guarantees, MIT license.
+- [README.id.md](README.id.md): Indonesian mirror of README.md.
+- [AGENTS.md](AGENTS.md): Authoritative AI-agent manual — repo map, architecture, conventions, safety boundaries, and owner-adaptation guide.
+- [docs/USER_GUIDE.md](docs/USER_GUIDE.md): Complete end-user manual for every feature (English).
+- [docs/USER_GUIDE.id.md](docs/USER_GUIDE.id.md): Complete end-user manual for every feature (Indonesian).
+- [docs/TROUBLESHOOTING.md](docs/TROUBLESHOOTING.md): Symptom -> Cause -> Fix reference (English).
+- [docs/TROUBLESHOOTING.id.md](docs/TROUBLESHOOTING.id.md): Symptom -> Cause -> Fix reference (Indonesian).
+- [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md): Component, event, and data-flow diagrams.
+- [docs/EXTENDING.md](docs/EXTENDING.md): Step-by-step customization recipes with verification commands.
+- [docs/PERSONAS.md](docs/PERSONAS.md): Complete guide for building, validating, and applying specialist AI personas across runtimes (English).
+- [docs/PERSONAS.id.md](docs/PERSONAS.id.md): Complete guide for building, validating, and applying specialist AI personas (Indonesian).
+- [docs/prompts/BUILD_PERSONA_PROMPT.md](docs/prompts/BUILD_PERSONA_PROMPT.md): Ready-to-paste prompt for any AI agent to interview the owner and build/apply a persona.
+- [.claude/skills/office-ai-persona-builder/SKILL.md](.claude/skills/office-ai-persona-builder/SKILL.md): Project-scoped Claude Code skill for building and exporting Office AI personas.
+
+## Key Source Files (Repository Root)
+- `main.js`, `preload.js`: Electron main process, single-instance lock, loopback-only network guard, safe folder-picker IPC.
+- `embedded_server.js`: Local HTTP/SSE server (`127.0.0.1:8770-8775`), CSP/Host/Origin guard, `X-Office-Token` auth, REST router.
+- `workspace_discovery.js`: Tiered auto-discovery for creator project folders (`Channels/*`) and separate YouTube dashboard directories.
+- `office_data.js`, `collector.js`, `pricing.json`: Atomic state/usage storage, read-only local agent session collector, multi-currency token pricing.
+- `settings_store.js`, `quality_store.js`, `personas.json`, `persona_schema.js`: App settings, 3-round QA quality workflow, 12-slot specialist roster.
+- `short_pipeline.js`, `short_process_runner.py`, `short_workflow_store.js`: Real 8-stage Video Short pipeline with 3 human gates (G1/G2/G3) and local/BYOK modes.
+- `youtube_dashboard_host.js`, `youtube_analytics_store.js`: Embedded YouTube Studio Manager lifecycle manager (never kills external servers) + legacy snapshot archive.
+- `agent_prompt_store.js`: Direct local CLI runner (`claude`, `codex`, `antigravity`, `opencode`, `hermes`, `gemini-api`) with live SSE output streaming.
+- `mt5_readonly_bridge.py`, `mt5_finance_store.js`: Strictly read-only MetaTrader 5 bridge (HTTP 403 write guard) and multi-source office ledger.
+- `office.js`, `furniture.js`, `chars.js`, `specialist_wing.js`, `layout_catalog.js`, `layout_rules.js`, `office_layout.js`: Three.js 48x32 m voxel office world, pathfinding, and choreography.
+- `index.html`, `office_ui.css`, `office_v12.css`, `office_short.css`, `office_panels.js`, `office_setup_ui.js`, `office_short_ui.js`, `office_youtube_ui.js`, `office_v12_ui.js`, `office_v13_ui.js`, `office_specialists.js`, `office_settings_ui.js`: Frontend UI panels and Setup Center.
+- `i18n.js`, `i18n_ready.js`, `locales/*.json`: 6-language localization (`en`, `id`, `es`, `ja`, `zh-CN`, `ar` with RTL).
+- `office_flow_model.js`, `office_flow_map.json`, `office_flow3d.js`, `office_flow_ui.js`, `office_flow.css`: Real-time overhead 3D task flow engine (`Boss -> Secretary -> Agent -> Personas -> Return`), pooled 3D line/packet renderer, Live Flow panel, accessible color+pattern legend, and editable subagent-to-persona mappings.
+- `hook_send.py`, `office_hook_codex.py`, `office_hooks.py`, `office_event.py`: Stdlib Python hooks (Claude Code & Codex CLI), safe preview/backup/merge/uninstall hook manager, and cross-provider CLI event emitter.
+- `personas/new_persona.py`, `personas/validate_persona.py`, `personas/export_persona.py`, `personas/persona_run.py`, `personas/MANIFEST.json`: Specialist persona scaffolding, safety/rubric/manifest validator, multi-runtime exporter (`claude`, `codex`, `gemini`, `opencode`, `hermes`, `generic`), and prompt-assembly/check-revise demo runner.
+- `pack.js`, `repack.py`: Explicit `RUNTIME_FILES` manifest and deterministic desktop bundle repacker.

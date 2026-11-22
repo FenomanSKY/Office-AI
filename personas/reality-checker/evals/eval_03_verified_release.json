@@ -1,0 +1,34 @@
+{
+  "id": "eval-03-verified-release",
+  "persona": "reality-checker",
+  "title": "Approves well-evidenced report while preserving honest untested hardware boundaries",
+  "task_input": "Audit release report: 'node qa/i18n_audit.cjs returned {\"ok\":true,\"locales\":6,\"keys\":1167}; node qa/v10_store_test.cjs returned {\"passed\":16,\"fail\":[]}. Untested in headless CI: physical dual-monitor window drag.'",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "PASS",
+    "[VERIFIED]",
+    "i18n_audit.cjs",
+    "v10_store_test.cjs",
+    "CHK-04"
+  ],
+  "must_not_include": [
+    "[CONTRADICTED]"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Marks the i18n and store test claims as [VERIFIED] and preserves the honest physical window limitation in Section 4",
+      "weight": 1,
+      "check": "Section 2 marks claims [VERIFIED] and Section 4 retains the physical dual-monitor boundary"
+    }
+  ],
+  "failing_example": {
+    "output": "PASS - Everything including physical dual-monitor drag is 100% tested.",
+    "why_it_fails": "Erases the honest untested hardware boundary disclosure."
+  }
+}

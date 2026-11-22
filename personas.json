@@ -1,0 +1,172 @@
+[
+  {
+    "id": "frontend-developer",
+    "name": "Frontend Developer",
+    "department": "engineering",
+    "color": "#528dc8",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 0,
+      "hair": "short",
+      "hairColor": "#42352e",
+      "accessory": "headset",
+      "outfit": "shirt",
+      "top": "#528dc8"
+    }
+  },
+  {
+    "id": "software-architect",
+    "name": "Software Architect",
+    "department": "engineering",
+    "color": "#7065b9",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 1,
+      "hair": "curly",
+      "hairColor": "#42352e",
+      "accessory": "glasses",
+      "outfit": "shirt",
+      "top": "#7065b9"
+    }
+  },
+  {
+    "id": "mobile-app-builder",
+    "name": "Mobile App Builder",
+    "department": "engineering",
+    "color": "#49a999",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 2,
+      "hair": "hijab",
+      "hairColor": "#42352e",
+      "accessory": "headset",
+      "outfit": "shirt",
+      "top": "#49a999"
+    }
+  },
+  {
+    "id": "desktop-app-engineer",
+    "name": "Desktop App Engineer",
+    "department": "engineering",
+    "color": "#728b9e",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 3,
+      "hair": "beard",
+      "hairColor": "#42352e",
+      "accessory": "glasses",
+      "outfit": "shirt",
+      "top": "#728b9e"
+    }
+  },
+  {
+    "id": "ui-designer",
+    "name": "UI Designer",
+    "department": "design",
+    "color": "#bb629d",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 0,
+      "hair": "ponytail",
+      "hairColor": "#42352e",
+      "accessory": "headset",
+      "outfit": "shirt",
+      "top": "#bb629d"
+    }
+  },
+  {
+    "id": "reality-checker",
+    "name": "Reality Checker",
+    "department": "qa",
+    "color": "#b96b56",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 1,
+      "hair": "short",
+      "hairColor": "#42352e",
+      "accessory": "glasses",
+      "outfit": "lab",
+      "top": "#b96b56"
+    }
+  },
+  {
+    "id": "social-media-strategist",
+    "name": "Social Media Strategist",
+    "department": "content",
+    "color": "#ce914b",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 2,
+      "hair": "curly",
+      "hairColor": "#42352e",
+      "accessory": "headset",
+      "outfit": "shirt",
+      "top": "#ce914b"
+    }
+  },
+  {
+    "id": "short-video-editing-coach",
+    "name": "Short Video Coach",
+    "department": "content",
+    "color": "#d5b859",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 3,
+      "hair": "hijab",
+      "hairColor": "#42352e",
+      "accessory": "glasses",
+      "outfit": "shirt",
+      "top": "#d5b859"
+    }
+  },
+  {
+    "id": "technical-writer",
+    "name": "Technical Writer",
+    "department": "docs",
+    "color": "#9675b3",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 0,
+      "hair": "beard",
+      "hairColor": "#42352e",
+      "accessory": "headset",
+      "outfit": "shirt",
+      "top": "#9675b3"
+    }
+  },
+  {
+    "id": "project-shepherd",
+    "name": "Project Shepherd",
+    "department": "docs",
+    "color": "#a17d60",
+    "enabled": true,
+    "engine": "codex",
+    "account": "Codex",
+    "avatar": {
+      "skin": 1,
+      "hair": "ponytail",
+      "hairColor": "#42352e",
+      "accessory": "glasses",
+      "outfit": "shirt",
+      "top": "#a17d60"
+    }
+  }
+]

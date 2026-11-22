@@ -1,0 +1,38 @@
+[
+  {
+    "code": "id",
+    "name": "Bahasa Indonesia",
+    "dir": "ltr",
+    "currency": "IDR"
+  },
+  {
+    "code": "en",
+    "name": "English",
+    "dir": "ltr",
+    "currency": "USD"
+  },
+  {
+    "code": "es",
+    "name": "Español",
+    "dir": "ltr",
+    "currency": "EUR"
+  },
+  {
+    "code": "ja",
+    "name": "日本語",
+    "dir": "ltr",
+    "currency": "JPY"
+  },
+  {
+    "code": "zh-CN",
+    "name": "中文",
+    "dir": "ltr",
+    "currency": "CNY"
+  },
+  {
+    "code": "ar",
+    "name": "العربية",
+    "dir": "rtl",
+    "currency": "USD"
+  }
+]

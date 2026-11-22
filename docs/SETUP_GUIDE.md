@@ -1,0 +1,2 @@
+<!-- [Diubah oleh Gemini - 2026-11-21] Alihkan SETUP_GUIDE.md ke panduan pengguna utama agar tidak ada dua panduan yang bertentangan -->
+This guide has moved to **[`USER_GUIDE.md`](USER_GUIDE.md)** (English) and **[`USER_GUIDE.id.md`](USER_GUIDE.id.md)** (Bahasa Indonesia). For common errors, see **[`TROUBLESHOOTING.md`](TROUBLESHOOTING.md)** / **[`TROUBLESHOOTING.id.md`](TROUBLESHOOTING.id.md)**.

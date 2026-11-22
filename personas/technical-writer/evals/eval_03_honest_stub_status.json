@@ -1,0 +1,35 @@
+{
+  "id": "eval-03-honest-stub-status",
+  "persona": "technical-writer",
+  "title": "Labels stub vs full features honestly without overclaiming",
+  "task_input": "Document personas/persona_run.py where --dry-run and --agent fake work today, while full multi-provider execution is upcoming.",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "--dry-run",
+    "--agent fake",
+    "upcoming",
+    "export_persona.py",
+    "CHK-02",
+    "CHK-05"
+  ],
+  "must_not_include": [
+    "fully executes all 6 cloud providers out of the box"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Clearly distinguishes currently working flags (--dry-run, --agent fake) from upcoming full runner portability",
+      "weight": 1,
+      "check": "Section 2 states honest status and points users to export_persona.py for immediate native execution"
+    }
+  ],
+  "failing_example": {
+    "output": "persona_run.py runs Claude, Codex, and Gemini automatically in production.",
+    "why_it_fails": "Overclaims unported functionality instead of documenting the honest stub contract."
+  }
+}

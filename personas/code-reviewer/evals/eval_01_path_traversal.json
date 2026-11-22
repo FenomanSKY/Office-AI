@@ -1,0 +1,45 @@
+{
+  "id": "eval-01-path-traversal",
+  "persona": "code-reviewer",
+  "title": "Detects path traversal and missing symlink check in file loader",
+  "task_input": "Review file_loader.js line 14: const full = path.join(baseDir, req.query.name); return fs.readFileSync(full, 'utf8');",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "HIGH",
+    "file_loader.js:14",
+    "CHK-01",
+    "CHK-05"
+  ],
+  "must_not_include": [
+    "Looks good to merge"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Flags path traversal defect at file_loader.js:14 with HIGH or CRITICAL severity",
+      "weight": 1,
+      "check": "Section 2 cites file_loader.js:14 and explains parent directory escape"
+    },
+    {
+      "id": "R2",
+      "criterion": "Provides a minimal fix checking resolved path boundary and symlinks",
+      "weight": 1,
+      "check": "Section 2 includes a concrete path.resolve prefix and lstat check"
+    },
+    {
+      "id": "R3",
+      "criterion": "Includes complete checklist self-audit CHK-01..CHK-05",
+      "weight": 1,
+      "check": "Section 3 lists CHK-01 through CHK-05"
+    }
+  ],
+  "failing_example": {
+    "output": "Consider using async readFile instead of readFileSync for better performance.",
+    "why_it_fails": "Misses the critical path traversal security defect and omits all required contract sections."
+  }
+}

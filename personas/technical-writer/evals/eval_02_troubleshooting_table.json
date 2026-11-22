@@ -1,0 +1,36 @@
+{
+  "id": "eval-02-troubleshooting-table",
+  "persona": "technical-writer",
+  "title": "Produces a Symptom -> Cause -> Fix troubleshooting table for HTTP 409 quality state errors",
+  "task_input": "Document a troubleshooting entry explaining why POST /event with type=verdict returns HTTP 409 when inspect_start was skipped in quality_store.js.",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "Symptom",
+    "Cause",
+    "Fix",
+    "409",
+    "inspect_start",
+    "quality_store.js",
+    "CHK-02"
+  ],
+  "must_not_include": [
+    "Restart your computer"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Presents a clear Symptom -> Cause -> Fix table citing quality_store.js state transitions",
+      "weight": 1,
+      "check": "Section 2 explains that submit must transition through inspect_start before verdict"
+    }
+  ],
+  "failing_example": {
+    "output": "If you get error 409, delete quality.json and try again.",
+    "why_it_fails": "Recommends destructive data deletion instead of explaining the required inspect_start state transition."
+  }
+}

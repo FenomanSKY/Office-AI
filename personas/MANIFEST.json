@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "algorithm": "sha256",
+  "personas": {
+    "code-reviewer": {
+      "code-reviewer/persona.md": "c97133db05c39d3e9937745527175b4d35fbb7c7733f490d6cccd040e5ff4a1c",
+      "code-reviewer/checklist.md": "15964c44a2cf52df639ab900c25191fc0eac4ac8428e394dc00d75ca211a7951",
+      "code-reviewer/learnings.md": "70cb81d516c7e01a51c64ae9710e632094dc8d44bf00de50a6df688aafa427ac",
+      "code-reviewer/evals/eval_01_path_traversal.json": "5cff1eb5621c5f347c0a75aa72075b5cb30d6594efed5d07e30600d0b6630df1",
+      "code-reviewer/evals/eval_02_async_race.json": "d8e721ba46610587c4fc4ef1c5a64a260a0fa4fb8e9a034e87ed11bfbdcef630",
+      "code-reviewer/evals/eval_03_clean_patch.json": "54f9cb311bbdd44870e5f5fae835ee7bf641f13723f32451cc46b3a3474f9274",
+      "code-reviewer/evals/eval_04_prompt_injection.json": "5116da06c3b3dc992f4b6f5eecb305c57687d562288995d09f7edc2aa7c2755a"
+    },
+    "reality-checker": {
+      "reality-checker/persona.md": "140d528cc21ab869bf2e18cb2dbea91140671d95a26947052e82941ece0ba597",
+      "reality-checker/checklist.md": "9dfb43f2ada64a547fa06eba9f9629bc14a2acdcbd02d2d291fc4f4cc541ffa8",
+      "reality-checker/learnings.md": "1515362cc94d4eae814f4a4f631e60d08458feac908ee2d2d70fed553402e661",
+      "reality-checker/evals/eval_01_missing_evidence.json": "4d2f56e7f19fcf5fbeb3ccee8d8e0ade46989ef1262541b2b2b551c5acbd0108",
+      "reality-checker/evals/eval_02_contradictory_metrics.json": "23d15af727a3eb1d92861ef5811c75fe3480e7f0f2796e056c17746592d7c983",
+      "reality-checker/evals/eval_03_verified_release.json": "0428b423291691a1f780644b6a78e168d17feb05d00cc9f34999a25e26867dad",
+      "reality-checker/evals/eval_04_prompt_injection.json": "6b18036160454db469dd58f866c29c2ea47b73f8c0f597fad7ea802033229848"
+    },
+    "technical-writer": {
+      "technical-writer/persona.md": "a4da027b17b6e765a4eb4e47bc877980b723e22ce8d3fc3579b2fdcc30d6744e",
+      "technical-writer/checklist.md": "2b54b7c047bd35a497061aa9e0650ef8dda46e47bbdb44b1caa0cc6dc8d45177",
+      "technical-writer/learnings.md": "ed0d7a9a56b8024f93e9b98de1ca0ac87594f184eed0a831d24770e1e9a18300",
+      "technical-writer/evals/eval_01_quickstart_guide.json": "b8a410c30e4eca8f5258985f71e8b9d25937b9d0de6adec5002a530511ddcefd",
+      "technical-writer/evals/eval_02_troubleshooting_table.json": "92e45386b118c4eae8ac0145a9c597c0b61127458e20eaf6ae7fcfb0083eea27",
+      "technical-writer/evals/eval_03_honest_stub_status.json": "02c3dde7fd054cc45c2245a5d889888ffe9737df5f114b1533df54283083cd55",
+      "technical-writer/evals/eval_04_prompt_injection.json": "dbdc2de8278c07f5ecc5012464be78131d850b7bf3716ca48e4c96b94d403a7b"
+    }
+  }
+}

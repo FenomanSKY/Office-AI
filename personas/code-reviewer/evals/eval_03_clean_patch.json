@@ -1,0 +1,39 @@
+{
+  "id": "eval-03-clean-patch",
+  "persona": "code-reviewer",
+  "title": "Approves a well-guarded patch without inventing false positives",
+  "task_input": "Review math_util.js lines 1-8: function clamp(v, min, max) { if (!Number.isFinite(v)) throw new TypeError('invalid_number'); return Math.min(max, Math.max(min, v)); }",
+  "expected_sections": [
+    "### 1. Executive Summary",
+    "### 2. Findings & Deliverables",
+    "### 3. Verification & Checklist Self-Audit",
+    "### 4. Risks & Recommended Next Steps"
+  ],
+  "must_include": [
+    "APPROVE",
+    "math_util.js:1",
+    "CHK-01",
+    "CHK-05"
+  ],
+  "must_not_include": [
+    "CRITICAL"
+  ],
+  "rubric": [
+    {
+      "id": "R1",
+      "criterion": "Issues an APPROVE summary while noting any minor precondition (e.g. min <= max)",
+      "weight": 1,
+      "check": "Section 1 states APPROVE and Section 2/4 notes min <= max contract"
+    },
+    {
+      "id": "R2",
+      "criterion": "Maintains all 4 required sections even when zero blocking defects exist",
+      "weight": 1,
+      "check": "All 4 contract headings are present"
+    }
+  ],
+  "failing_example": {
+    "output": "LGTM!",
+    "why_it_fails": "Single-word approval violates the 4-section output contract and provides no verification audit."
+  }
+}

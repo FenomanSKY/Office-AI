@@ -1,0 +1,44 @@
+{
+  "version": 1,
+  "contrast": { "lightBackground": "#ffffff", "darkBackground": "#111827", "minimumRatio": 3 },
+  "patterns": ["solid", "dashed", "dotted"],
+  "roles": {
+    "boss": { "label": "Boss", "color": "#687787", "pattern": "solid" },
+    "secretary": { "label": "Secretary", "color": "#967029", "pattern": "dashed" },
+    "return": { "label": "Result", "color": "#23875f", "pattern": "dotted" },
+    "failed": { "label": "Failed", "color": "#c44e59", "pattern": "dashed" }
+  },
+  "providers": {
+    "claude": { "label": "Claude", "color": "#b6673e", "pattern": "solid" },
+    "codex": { "label": "Codex", "color": "#258675", "pattern": "dashed" },
+    "gemini": { "label": "Gemini", "color": "#6076c6", "pattern": "dotted" },
+    "opencode": { "label": "OpenCode", "color": "#9270b7", "pattern": "dashed" },
+    "hermes": { "label": "Hermes", "color": "#a17424", "pattern": "dotted" },
+    "other": { "label": "Agent", "color": "#687787", "pattern": "solid" }
+  },
+  "providerAliases": { "antigravity": "gemini", "gemini-api": "gemini", "agy": "gemini" },
+  "personas": {
+    "general": { "label": "General", "color": "#687787", "pattern": "dotted" },
+    "researcher": { "label": "Researcher", "color": "#258675", "pattern": "dotted" },
+    "software-architect": { "label": "Software Architect", "color": "#9270b7", "pattern": "dashed" },
+    "frontend-developer": { "label": "Frontend Developer", "color": "#347fc0", "pattern": "solid" },
+    "mobile-app-builder": { "label": "Mobile App Builder", "color": "#27898a", "pattern": "dashed" },
+    "desktop-app-engineer": { "label": "Desktop App Engineer", "color": "#687787", "pattern": "solid" },
+    "ui-designer": { "label": "UI Designer", "color": "#b15c99", "pattern": "solid" },
+    "reality-checker": { "label": "Reality Checker", "color": "#c44e59", "pattern": "dashed" },
+    "social-media-strategist": { "label": "Social Media Strategist", "color": "#a17424", "pattern": "dotted" },
+    "short-video-editing-coach": { "label": "Short Video Coach", "color": "#967029", "pattern": "solid" },
+    "technical-writer": { "label": "Technical Writer", "color": "#7f74b9", "pattern": "dotted" },
+    "project-shepherd": { "label": "Project Shepherd", "color": "#9b7358", "pattern": "dashed" }
+  },
+  "subagentTypes": {
+    "explore": "researcher", "research": "researcher", "researcher": "researcher",
+    "plan": "software-architect", "software architect": "software-architect",
+    "general-purpose": "general", "full-stack dev": "general", "backend dev": "general",
+    "kerja-berat": "software-architect", "kerja-sedang": "frontend-developer",
+    "kerja-ringan": "technical-writer", "claude-code-guide": "technical-writer",
+    "frontend dev": "frontend-developer", "designer": "ui-designer",
+    "qa engineer": "reality-checker", "pentester": "reality-checker",
+    "project manager": "project-shepherd"
+  }
+}
