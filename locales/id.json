@@ -3,6 +3,9 @@
     "na": "n/a"
   },
   "strings": {
+    "model_quality": "Kualitas model karakter",
+    "model_low": "Low · Voxel klasik",
+    "model_high": "High · Model HD",
     "office_menu": "Menu",
     "report_batch_incomplete": "Sebagian laporan belum diperbarui. Coba lagi.",
     "pengaturan": "Pengaturan",

@@ -3,6 +3,9 @@
     "na": "n/a"
   },
   "strings": {
+    "model_quality": "角色模型质量",
+    "model_low": "低 · 经典体素",
+    "model_high": "高 · 高清模型",
     "office_menu": "菜单",
     "report_batch_incomplete": "部分报告未能更新。请重试。",
     "pengaturan": "设置",

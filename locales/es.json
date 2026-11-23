@@ -3,6 +3,9 @@
     "na": "n/a"
   },
   "strings": {
+    "model_quality": "Calidad del modelo de personaje",
+    "model_low": "Baja · Vóxel clásico",
+    "model_high": "Alta · Modelo HD",
     "office_menu": "Menú",
     "report_batch_incomplete": "No se han podido actualizar algunos informes. Inténtalo de nuevo.",
     "pengaturan": "Configuración",

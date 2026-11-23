@@ -49,7 +49,90 @@ const officeAffordances={water:{activity:I18n.raw('strings.menyiram_tanaman'),du
 function worldAffords(...keys){return Object.fromEntries(keys.map(k=>[k,{...officeAffordances[k],animation:officeAffordances[k].animation||k,requires:'instance'}]));}
 
 // [Diubah oleh Gemini - 2026-11-20] Material kaca bersama & instancing terpisah untuk kaca buram dan bening agar draw call tetap hemat (<= 360).
-const sharedVoxelMaterial=new THREE.MeshLambertMaterial({color:0xffffff});
+// Surface detail is baked once and shared by all timber, upholstery and brushed parts.
+function officeSurfaceTile(){
+ const n=512, pixels=new Uint8Array(n*n*4);
+ let seed=87413;
+ function random(){seed=(Math.imul(1664525,seed)+1013904223)>>>0;return seed/4294967296;}
+ const field=new Float32Array(32*32);
+ for(let i=0;i<field.length;i++)field[i]=random();
+ const noise=(x,y)=>{
+  const i=Math.floor(x),j=Math.floor(y);
+  let u=x-i,v=y-j;u=u*u*(3-2*u);v=v*v*(3-2*v);
+  const at=(a,b)=>field[(b&31)*32+(a&31)];
+  return (at(i,j)*(1-u)+at(i+1,j)*u)*(1-v)+(at(i,j+1)*(1-u)+at(i+1,j+1)*u)*v;
+ };
+ for(let y=0;y<n;y++)for(let x=0;x<n;x++){
+  const u=x/n,v=y/n,r=random(),coarse=noise(u*3,v*17);
+  const bend=.8*Math.sin(u*6.283)+.47*Math.sin(u*12.566+v*6.283);
+  const ring=.5+.5*Math.sin(6.283*(v*29+bend+.16*coarse));
+  const fiber=.5+.5*Math.sin(6.283*(v*107+bend*2+.31*coarse));
+  const k=(y*n+x)*4;
+  pixels[k]=255*(.22+.32*coarse+.18*ring+.16*fiber+.11*r);
+  pixels[k+1]=255*(.36+.30*(.5+.5*Math.cos(x*Math.PI/3)*Math.sin(y*Math.PI/4))+.22*r);
+  pixels[k+2]=255*(.44+.23*fiber+.18*r);pixels[k+3]=255;
+ }
+ const tex=new THREE.DataTexture(pixels,n,n,THREE.RGBAFormat);
+ tex.wrapS=tex.wrapT=THREE.RepeatWrapping;tex.generateMipmaps=true;
+ tex.minFilter=THREE.LinearMipmapLinearFilter;tex.magFilter=THREE.LinearFilter;tex.anisotropy=4;tex.needsUpdate=true;
+ return tex;
+}
+const officeSurfaceMap=officeSurfaceTile();
+const plainPart=new THREE.MeshLambertMaterial({color:0xffffff});
+const officeFinishes=new Map();
+function surfaceMaterial(kind){
+ if(!kind)return plainPart;
+ if(officeFinishes.has(kind))return officeFinishes.get(kind);
+ const mat=new THREE.MeshStandardMaterial({color:0xffffff,roughness:({oak:.57,fabric:.92,metal:.41,leaf:.59})[kind],metalness:kind==='metal'?.35:0});
+ const channel=({oak:'r',fabric:'g',metal:'b',leaf:'r'})[kind];
+ mat.customProgramCacheKey=()=>'office-finish-'+kind;
+ mat.onBeforeCompile=shader=>{
+  shader.uniforms.officeTile={value:officeSurfaceMap};
+  shader.vertexShader='varying vec2 vGrain;\n'+shader.vertexShader;
+  shader.vertexShader=shader.vertexShader.replace('#include <begin_vertex>',`#include <begin_vertex>
+   vec3 extent=vec3(length(instanceMatrix[0].xyz),length(instanceMatrix[1].xyz),length(instanceMatrix[2].xyz));
+   vec3 p=(position+vec3(.5))*extent;
+   vec2 grain=abs(normal.y)>.56?p.xz:abs(normal.x)>.65?p.zy:p.xy;
+   vGrain=grain*vec2(.46,.74)+fract(instanceMatrix[3].xz*vec2(.381,.293));
+  `);
+  shader.fragmentShader='uniform sampler2D officeTile;varying vec2 vGrain;\n'+shader.fragmentShader;
+  shader.fragmentShader=shader.fragmentShader.replace('#include <color_fragment>',`#include <color_fragment>
+   float pores=texture2D(officeTile,vGrain).${channel}-.535;
+   diffuseColor.rgb*=1.+pores*${kind==='oak'?'1.1':'.48'};
+  `);
+  shader.fragmentShader=shader.fragmentShader.replace('#include <roughnessmap_fragment>','#include <roughnessmap_fragment>\nroughnessFactor=clamp(roughnessFactor+pores*.22,.22,1.);');
+ };
+ officeFinishes.set(kind,mat);return mat;
+}
+let roundedOfficeGeo,officeLeafGeo;
+function roundedOfficeShape(){
+ if(roundedOfficeGeo)return roundedOfficeGeo;
+ const geo=new THREE.BoxGeometry(1,1,1,6,6,6),point=new THREE.Vector3(),core=new THREE.Vector3(),normal=new THREE.Vector3();
+ const pos=geo.attributes.position,normals=geo.attributes.normal;
+ for(let i=0;i<pos.count;i++){
+  point.fromBufferAttribute(pos,i);core.copy(point).clampScalar(-.33,.33);
+  normal.copy(point).sub(core).normalize();point.copy(core).addScaledVector(normal,.17);
+  pos.setXYZ(i,point.x,point.y,point.z);normals.setXYZ(i,normal.x,normal.y,normal.z);
+ }
+ roundedOfficeGeo=geo;return geo;
+}
+function officeLeafShape(){
+ if(officeLeafGeo)return officeLeafGeo;
+ const g=new THREE.BufferGeometry(),v=[],idx=[];
+ for(let i=0;i<=8;i++){
+  const f=i/8,w=.5*Math.pow(Math.sin(Math.PI*f),.75),lift=.18*Math.sin(f*Math.PI)-.17*f*f;
+  v.push(-w,lift,f,0,lift+w*.33,f,w,lift,f);
+  if(i<8){const s=i*3;idx.push(s,s+3,s+1,s+1,s+3,s+4,s+1,s+4,s+2,s+2,s+4,s+5);}
+ }
+ g.setAttribute('position',new THREE.Float32BufferAttribute(v,3));g.setIndex(idx);g.computeVertexNormals();
+ officeLeafGeo=g;surfaceMaterial('leaf').side=THREE.DoubleSide;return g;
+}
+function finishBox(parent,size,position,color,finish,rounded=false){
+ const m=voxelBox(parent,size,position,color);
+ if(rounded)m.geometry=roundedOfficeShape();
+ m.userData.solidFinish=finish;return m;
+}
+
 const sharedFrostedGlassMat=new THREE.MeshPhongMaterial({color:0xd9e8ea,transparent:true,opacity:.44,shininess:90,side:THREE.DoubleSide,depthWrite:false});
 const sharedClearGlassMat=new THREE.MeshPhongMaterial({color:0xc5dadd,transparent:true,opacity:.20,shininess:80,side:THREE.DoubleSide,depthWrite:false});
 const sharedPlaneGeo1=new THREE.PlaneGeometry(1,1);
@@ -63,11 +146,38 @@ function addGlassPlane(parent,w,h,x,y,z,kind='clear',rotY=0){
 function makeMonitor(){const g=new THREE.Group();voxelBox(g,[.30,.06,.26],[0,.03,0],0x293745);voxelBox(g,[.08,.30,.08],[0,.19,.02],0x3b4b59);voxelBox(g,[1.03,.65,.10],[0,.59,0],0x263444);voxelBox(g,[.92,.53,.018],[0,.59,.06],0x95c5d4);for(let i=0;i<5;i++)voxelBox(g,[.24+(i%3)*.18,.027,.02],[-.18+(i%2)*.09,.76-i*.085,.075],i%2?0xe2f2e8:0x407d9c);return g;}
 // [Diubah oleh Gemini - 2026-11-20] Monitor sekunder voxel penuh (0 draw call tambahan) untuk stasiun dual-monitor Engineering Bay.
 function makeStaticMonitor(scale=.82){const g=new THREE.Group();voxelBox(g,[.28,.05,.24],[0,.025,0],0x293745);voxelBox(g,[.07,.28,.07],[0,.17,.01],0x3b4b59);voxelBox(g,[.96,.58,.09],[0,.54,0],0x243240);voxelBox(g,[.86,.48,.02],[0,.54,.05],0x1c2b36);const cols=[0x75c4a8,0xe5bd74,0x86b8e0,0xdf8f74,0xd6e6dc];for(let i=0;i<5;i++)voxelBox(g,[.28+(i%3)*.15,.03,.015],[-.14+(i%2)*.08,.70-i*.08,.065],cols[i%cols.length]);g.scale.setScalar(scale);return g;}
-function makeDesk(){const g=new THREE.Group();voxelBox(g,[2.75,.16,1.25],[0,1.08,0],0xbc8c5c);voxelBox(g,[2.67,.05,1.19],[0,1.18,0],0xd6ae7a);for(const x of [-1.13,1.13])for(const z of [-.45,.45])voxelBox(g,[.13,1.04,.13],[x,.52,z],0x53616b);const m=makeMonitor();m.position.set(-.20,1.21,-.27);g.add(m);voxelBox(g,[.72,.04,.27],[-.20,1.22,.34],0x354453);voxelBox(g,[.13,.06,.20],[.38,1.23,.36],0x344553);return g;}
-function makeChair(seatColor=0x304458){const g=new THREE.Group();const backColor=Math.min(0xffffff,seatColor+0x0c0f12);voxelBox(g,[.65,.13,.63],[0,.62,0],seatColor);voxelBox(g,[.66,.64,.13],[0,1.02,.3],backColor);voxelBox(g,[.10,.48,.10],[0,.28,0],0x657681);for(const a of [-1,1]){voxelBox(g,[.72,.09,.12],[0,.12,0],0x394a57);voxelBox(g,[.12,.09,.72],[0,.12,0],0x394a57);voxelBox(g,[.12,.12,.16],[a*.31,.07,0],0x283744);voxelBox(g,[.16,.12,.12],[0,.07,a*.31],0x283744);voxelBox(g,[.08,.3,.08],[a*.37,.8,0],0x526475);voxelBox(g,[.12,.07,.44],[a*.37,.96,0],0x34495b);}return g;}
+function makeDesk(){const g=new THREE.Group();finishBox(g,[2.75,.16,1.25],[0,1.08,0],0xbc8c5c,'oak');finishBox(g,[2.67,.05,1.19],[0,1.18,0],0xd6ae7a,'oak');for(const x of [-1.13,1.13])for(const z of [-.45,.45])voxelBox(g,[.13,1.04,.13],[x,.52,z],0x53616b);const m=makeMonitor();m.position.set(-.20,1.21,-.27);g.add(m);voxelBox(g,[.72,.04,.27],[-.20,1.22,.34],0x354453);voxelBox(g,[.13,.06,.20],[.38,1.23,.36],0x344553);return g;}
+function makeChair(seatColor=0x304458){
+ const g=new THREE.Group(),rim=figureTone(seatColor,0xb8c1bf,.17);
+ finishBox(g,[.67,.14,.63],[0,.62,0],seatColor,'fabric',true);
+ finishBox(g,[.62,.60,.13],[0,1.01,.29],seatColor,'fabric',true).rotation.x=.055;
+ finishBox(g,[.51,.13,.09],[0,.89,.19],rim,'fabric',true);
+ finishBox(g,[.10,.47,.10],[0,.32,0],0x78878a,'metal',true);
+ for(let i=0;i<5;i++){
+  const a=i*Math.PI*2/5;
+  finishBox(g,[.083,.064,.34],[.15*Math.sin(a),.145,.15*Math.cos(a)],0x596a70,'metal',true).rotation.y=a;
+  finishBox(g,[.094,.12,.125],[.30*Math.sin(a),.077,.30*Math.cos(a)],0x343d44,'metal',true);
+ }
+ for(const side of [-1,1]){
+  finishBox(g,[.055,.28,.080],[side*.34,.795,.03],0x53636a,'metal');
+  finishBox(g,[.115,.064,.41],[side*.36,.94,0],rim,'fabric',true);
+ }
+ return g;
+}
 function makeShelf(){makeShelf.count=(makeShelf.count??-1)+1;const g=new THREE.Group();voxelBox(g,[2.8,2.65,.12],[0,1.35,-.26],0x9a704e);for(const x of [-1.36,1.36])voxelBox(g,[.14,2.8,.64],[x,1.4,0],0x9d744f);for(let r=0;r<4;r++){voxelBox(g,[2.8,.12,.64],[0,.1+r*.86,0],0xc59a6a);if(r<3)for(let i=0;i<10;i++)voxelBox(g,[.16,.40+(i%3)*.10,.37],[-1.14+i*.24,.37+r*.86+(i%3)*.05,.01],[0x506e89,0xc7b38a,0xac6c59,0x789887,0xe6d6ac][(i+r)%5]);}return g;}
 function makeWhiteboard(){const g=new THREE.Group();voxelBox(g,[3.6,1.85,.13],[0,0,0],0x8b9a9e);voxelBox(g,[3.42,1.67,.05],[0,0,.10],0xf4f4e7);voxelBox(g,[3.7,.08,.30],[0,-.95,.1],0x9ba8ac);return g;}
-function makePlant(s=1){const g=new THREE.Group();voxelBox(g,[.48,.44,.48],[0,.22,0],0xe3d8bf);voxelBox(g,[.40,.06,.40],[0,.44,0],0x635b47);voxelBox(g,[.08,.8,.08],[0,.8,0],0x71814d);for(let i=0;i<7;i++){const a=i*2.4;voxelBox(g,[.32,.27,.31],[Math.cos(a)*.24,.68+i*.1,Math.sin(a)*.23],i%2?0x72946a:0x4d7e5d);}g.scale.setScalar(s);return g;}
+function makePlant(s=1){
+ const g=new THREE.Group();
+ finishBox(g,[.48,.44,.48],[0,.22,0],0xd6c9b5,'fabric',true);
+ finishBox(g,[.41,.038,.41],[0,.44,0],0x604b3c,'oak',true);
+ finishBox(g,[.044,.82,.044],[0,.84,0],0x706749,'oak');
+ for(let i=0;i<17;i++){
+  const a=i*2.39996,y=.56+i*.044,r=.34+.041*Math.cos(i*1.33);
+  const leaf=finishBox(g,[.14+(i%3)*.025,.44,r],[0,y,0],[0x437055,0x64855c,0x52724e,0x84966a][i%4],'leaf');
+  leaf.geometry=officeLeafShape();leaf.rotation.order='YXZ';leaf.rotation.set(-.26-.28*Math.sin(i),a,Math.sin(i*.7)*.15);
+ }
+ g.scale.setScalar(s);return g;
+}
 function makeRug(){const g=new THREE.Group();voxelBox(g,[4.15,.035,4.9],[0,.025,0],0x344f70);voxelBox(g,[3.9,.018,4.65],[0,.05,0],0x294363);for(let i=0;i<28;i++){const a=i/28*Math.PI*2;const b=voxelBox(g,[.24,.02,.15],[Math.sin(a)*.85,.065,Math.cos(a)*.85],0x7396bd);b.rotation.y=a;}for(const x of [-.30,.30])voxelBox(g,[.21,.025,.79],[x,.075,0],0x91b4db);voxelBox(g,[.55,.025,.2],[0,.075,0],0x91b4db);return g;}
 // [Diubah oleh Gemini - 2026-11-20] Pembuat sekat kaca buram rendah, sofa standar, dispenser air, mesin fotokopi, dan pulau tanaman atrium.
 function makeLowDivider(len,h=1.55){
@@ -81,7 +191,7 @@ function makeLowDivider(len,h=1.55){
  return g;
 }
 function makeSofa(w=3.6){
- const n=new THREE.Group(),sb=(s,p,c)=>voxelBox(n,s,p,c);
+ const n=new THREE.Group(),sb=(s,p,c)=>finishBox(n,s,p,c,'fabric',true);
  sb([w,.46,.95],[0,.28,.06],0x6f9486);sb([w,.96,.20],[0,.82,.46],0x52796f);
  for(const dx of [-w/2+.09,w/2-.09])sb([.18,.36,.94],[dx,.70,.06],0x5f8577);
  const cw=(w-.42)/3;for(let i=0;i<3;i++)sb([cw,.15,.70],[-(w-.42)/2+cw/2+i*cw,.60,-.02],0xa3b7a0);
@@ -137,11 +247,17 @@ function makeAtriumIsland(){
 const design={inventory:[],screens:[],signs:[],ambient:new THREE.Group(),obstacles:[],leaves:[],steam:[],leds:[],fans:[],windows:[],tokenBits:[],emotes:new Map(),timeMode:'auto',cycle:0};
 function batchFurniture(group){
  group.updateMatrixWorld(true);
- const parts=[],extras=[];
- group.traverse(o=>{if(o.isMesh){if(o.geometry===voxelGeometry)parts.push(o);else extras.push(o);}});
+ const solids=new Map(),extras=[];
+ group.traverse(p=>{
+  if(!p.isMesh)return;
+  if(p.geometry!==voxelGeometry&&!p.userData.solidFinish){extras.push(p);return;}
+  const finish=p.userData.solidFinish||'',key=p.geometry.uuid+'|'+finish;
+  if(!solids.has(key))solids.set(key,{finish,parts:[]});
+  solids.get(key).parts.push(p);
+ });
  const result=new THREE.Group();
- if(parts.length){
-  const mesh=new THREE.InstancedMesh(voxelGeometry,sharedVoxelMaterial,parts.length);
+ for(const {finish,parts} of solids.values()){
+  const mesh=new THREE.InstancedMesh(parts[0].geometry,surfaceMaterial(finish),parts.length);
   parts.forEach((p,i)=>{mesh.setMatrixAt(i,p.matrixWorld);mesh.setColorAt(i,p.material.color);design.world?.bind(p,mesh,i);});
   mesh.castShadow=true;mesh.receiveShadow=true;result.add(mesh);
  }
@@ -280,7 +396,7 @@ function buildOfficeV4(scene) {
  }
  function table(x,z,w,d,name,color=0xc59a6a,rot=0,customId=null,extraOpts={}){
   const g=new THREE.Group();g.position.set(x,0,z);g.rotation.y=rot;room.add(g);
-  voxelBox(g,[w,.15,d],[0,1.08,0],color);voxelBox(g,[w-.08,.04,d-.08],[0,1.17,0],Math.min(0xffffff,color+0x101010));
+  finishBox(g,[w,.15,d],[0,1.08,0],color,'oak');finishBox(g,[w-.08,.04,d-.08],[0,1.17,0],Math.min(0xffffff,color+0x101010),'oak');
   for(const dx of [-w/2+.17,w/2-.17])for(const dz of [-d/2+.15,d/2-.15])voxelBox(g,[.12,1.02,.12],[dx,.51,dz],0x3f5557);
   const q=Math.abs(Math.sin(rot))>.7,obstacle=prop(name,x,z,q?d:w,q?w:d);
   const id=customId||({'Meja besar bos':'boss-desk','Meja sekretaris':'secretary-desk','Meja arsiparis':'archive-desk','Tenis meja':'pong','Meja lounge':'lounge','Pantry':'pantry'})[name]||'table-'+(tableSeq++);
@@ -397,8 +513,15 @@ function buildOfficeV4(scene) {
  box([48.6,.44,32.6],[0,-.26,0],0x8c9b91);
  box([4.3,.44,15.4],[-26.05,-.26,7.5],0x8c9b91);
  const plankCols=[0xcda574,0xd5b084,0xc7a071,0xd9b68a];
- for(let row=0;row<64;row++)for(let col=0;col<24;col++)box([1.97,.07,.48],[-23+col*2,.005,-15.75+row*.5],plankCols[(row+col*3)%4]);
- for(let row=0;row<30;row++)box([4,.07,.48],[-26,.005,.25+row*.5],row%2?0xa68c70:0xb19b7d);
+ for(let row=0;row<64;row++){
+  const shift=(row%3)*.67;
+  for(let col=-1;col<24;col++){
+   const left=Math.max(-24,-24+col*2+shift),right=Math.min(24,-22+col*2+shift);
+   if(right-left<.035)continue;
+   finishBox(room,[right-left-.015,.07,.488],[(left+right)/2,.005,-15.75+row*.5],plankCols[(row*7+(col+1)*3)%4],'oak');
+  }
+ }
+ for(let row=0;row<30;row++)finishBox(room,[4,.07,.488],[-26,.005,.25+row*.5],row%2?0xa68c70:0xb19b7d,'oak');
 
  // ==========================================================================
  // 2. DINDING LUAR & PORTAL PINTU (48 x 32 m)
@@ -820,9 +943,14 @@ function buildOfficeV4(scene) {
  layout.styleDesk=(i,{name,plate,color})=>{const d=layout.desks[i];if(!d)return;const s=d.state,next={name:String(name||''),plate:String(plate||''),color:/^#[0-9a-f]{6}$/i.test(color)?color:s.color};if(next.name===s.name&&next.plate===s.plate&&next.color===s.color)return;Object.assign(s,next);d.plate.redraw();d.rug.redraw();const a=world.get(d.objectId)?.accent;if(a){a.mesh.setColorAt(a.index,new THREE.Color(s.color));a.mesh.instanceColor.needsUpdate=true;}};
 
  const floorProps=design.inventory.filter(p=>p.w>.5&&p.d>.5&&!/rug|mat|Dinding/i.test(p.type));
- const shade=new THREE.InstancedMesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({color:0x30483e,transparent:true,opacity:.12,depthWrite:false}),floorProps.length);
+ const contact=document.createElement('canvas');contact.width=contact.height=64;
+ const cx=contact.getContext('2d'),falloff=cx.createRadialGradient(32,32,5,32,32,32);
+ falloff.addColorStop(0,'rgba(255,255,255,1)');falloff.addColorStop(.66,'rgba(255,255,255,.64)');falloff.addColorStop(1,'rgba(255,255,255,0)');
+ cx.fillStyle=falloff;cx.fillRect(0,0,64,64);
+ const contactMap=new THREE.CanvasTexture(contact);layout.contactMap=contactMap;
+ const shade=new THREE.InstancedMesh(new THREE.PlaneGeometry(1,1),new THREE.MeshBasicMaterial({map:contactMap,color:0x302f29,transparent:true,opacity:.27,depthWrite:false}),floorProps.length);
  const t=new THREE.Object3D();
- floorProps.forEach((p,i)=>{t.position.set(p.x,.045,p.z);t.rotation.set(-Math.PI/2,0,0);t.scale.set(p.w+.1,p.d+.1,1);t.updateMatrix();shade.setMatrixAt(i,t.matrix);});
+ floorProps.forEach((p,i)=>{t.position.set(p.x,.045,p.z);t.rotation.set(-Math.PI/2,0,0);t.scale.set(p.w*1.32+.1,p.d*1.32+.1,1);t.updateMatrix();shade.setMatrixAt(i,t.matrix);});
  scene.add(shade);
  return layout;
 }

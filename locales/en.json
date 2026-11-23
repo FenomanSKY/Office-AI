@@ -3,6 +3,9 @@
     "na": "n/a"
   },
   "strings": {
+    "model_quality": "Character model quality",
+    "model_low": "Low · Classic voxel",
+    "model_high": "High · HD model",
     "office_menu": "Menu",
     "report_batch_incomplete": "Some reports could not be updated. Try again.",
     "pengaturan": "Settings",

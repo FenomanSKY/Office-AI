@@ -7,7 +7,7 @@
 
 ![Demo Alur Sinar Cahaya Delegasi Real-Time Office AI V18](docs/images/flow_demo.gif)
 
-Karakter 3D memakai bentuk wajah, rambut, pakaian dan aksesori yang mengikuti pilihan avatar setiap agen. Kamera dekat menampilkan model terperinci. Tampilan menyeluruh dan Mode Hemat memakai geometri lebih ringan. Tekan **5** dengan pintasan bawaan untuk melihat Ruang Bos. [Lihat perbandingan model](shots/hd/perbandingan-karakter.jpg).
+Pilih karakter voxel klasik atau HD di **Pengaturan → Tampilan / Tema → Kualitas model karakter**. [Lihat perbandingan kedua model](#kualitas-model-karakter).
 
 **Cara membaca sinar alur cahaya di atas kepala** ([Cara Kerja Alur Sinar Langsung](#cara-kerja-alur-sinar-langsung)):
 - **Sinar emas bercahaya (`Bos -> Sekretaris`)**: Perintah diterima dan disalurkan langsung tanpa menahan alur, disertai pasangan denyut cahaya mengalir.
@@ -50,6 +50,7 @@ Karakter 3D memakai bentuk wajah, rambut, pakaian dan aksesori yang mengikuti pi
 | **Alur Tugas Langsung (Garis 3D)** | Pantau pohon delegasi nyata (**Bos -> Sekretaris -> Agen -> Persona Spesialis -> Paket kembali**) tampil dalam `<= 500 ms` dari hook Claude Code / Codex, Panel Prompt, atau Studio Video. |
 | **Pusat Setup ("Mulai di sini")** | Saat pertama kali membuka aplikasi, atau saat memasang/mencabut hook Claude Code & Codex, menambah folder proyek, CLI agen, kunci Gemini, maupun Dasbor YouTube. |
 | **Kantor Voxel 3D & Kamera** | Taruh di layar kedua untuk memantau agen utama, subagen (`P1..P8`), dan spesialis bekerja secara langsung. |
+| **Model karakter** | Pilih **Low** untuk avatar voxel asli atau **High** untuk wajah, rambut, dan pakaian yang lebih detail. Kualitas bisa diganti saat kantor berjalan. |
 | **Baki Laporan & Hook Langsung** | Mengumpulkan laporan selesai otomatis lewat `collector.js`, `hook_send.py`, dan `office_event.py`. |
 | **Bank Token & Perkiraan Biaya** | Total harian dan sepanjang riwayat lokal, peringkat penyedia/model/bulan dalam dropdown, impor penuh yang dapat dilanjutkan, serta estimasi biaya sesuai mata uang pilihan. |
 | **Sayap Mutu & 12 Persona** | Menjalankan pemeriksaan mutu 3 ronde terstruktur dan menyetujui pelajaran di Lemari Pembelajaran. |
@@ -107,6 +108,14 @@ Alih-alih menunggu karakter berjalan membawa kertas sementara agen AI sungguhan 
 | Mode Terang | Mode Gelap |
 |---|---|
 | ![Kantor Voxel 3D Mode Terang](docs/images/office_light.png) | ![Kantor Voxel 3D Mode Gelap](docs/images/office_dark.png) |
+
+#### Kualitas model karakter
+
+**High** menjadi pilihan awal untuk instalasi baru dan pengaturan versi lama. Saat model diganti, pakaian, posisi, dan tugas setiap karakter tetap sama. Office AI menyimpan pilihan untuk sesi berikutnya. **Mode Hemat** bisa digunakan bersama kedua model untuk meringankan beban render.
+
+| Low · Voxel klasik | High · Model HD |
+| --- | --- |
+| ![Empat staf demo dengan model voxel asli](docs/images/character-model-low.jpg) | ![Empat staf yang sama dengan wajah, rambut, dan pakaian versi HD](docs/images/character-model-high.jpg) |
 
 ---
 

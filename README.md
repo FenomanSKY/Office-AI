@@ -7,7 +7,7 @@
 
 ![Office AI V18 Live Glowing Overhead Delegation Beams Demo](docs/images/flow_demo.gif)
 
-Staff use articulated character models with sculpted faces, hair, garments and accessories driven by each agent’s avatar settings. Close views use detailed meshes. The overview and Economy mode use lighter meshes. Press **5** with the default shortcuts to see the Boss’s Office. [Compare the character models](shots/hd/perbandingan-karakter.jpg).
+Choose classic voxel or HD characters in **Settings → Appearance / theme → Character model quality**. [Compare both models](#character-model-quality).
 
 **Reading the live glowing flow beams** ([How the Live Flow Works](#how-the-live-flow-works)):
 - **Luminous gold beam (`Boss -> Secretary`)**: Prompt received and routed without blocking, with paired glowing pulses streaming along the arc.
@@ -50,6 +50,7 @@ Staff use articulated character models with sculpted faces, hair, garments and a
 | **Live Task Flow (Overhead 3D Lines)** | Watch real-time delegation trees (**Boss -> Secretary -> Agent -> Specialist Personas -> Return packet**) appear in `<= 500 ms` from Claude Code / Codex hooks, Prompt Panel, or Video Studio. |
 | **Setup Center ("Start here")** | First launch, or whenever you add a project folder, install/uninstall Claude Code or Codex hooks, test CLI agents, or add a Gemini key / YouTube dashboard folder. |
 | **3D Voxel Office & Camera** | Keep open on a second monitor to watch agents, subagents (`P1..P8`), and specialists work in real time. |
+| **Character models** | Choose **Low** for the original block-built avatars or **High** for sculpted faces, layered hair and tailored outfits. Switch while the office is running. |
 | **Report Tray & Live Hooks** | Collect finished agent summaries automatically via `collector.js`, `hook_send.py`, and `office_event.py`. |
 | **Token Bank & Cost Estimator** | Daily and lifetime local totals, compact provider/model/month rankings, resumable full-history import, and estimated API costs in your chosen currency. |
 | **Quality Wing & 12 Personas** | Run structured 3-round QA inspections and approve reusable lessons in the Learning Cabinet. |
@@ -107,6 +108,14 @@ Instead of waiting for characters to walk across the office carrying paper while
 | Light Mode | Dark Mode |
 |---|---|
 | ![3D Voxel Office Light Mode](docs/images/office_light.png) | ![3D Voxel Office Dark Mode](docs/images/office_dark.png) |
+
+#### Character model quality
+
+**High** is the default for new installations and earlier settings files. Changing the model keeps each character’s outfit, position and current task. Office AI remembers the choice when reopened. **Economy mode** can be used with either model to reduce rendering cost.
+
+| Low · Classic voxel | High · HD model |
+| --- | --- |
+| ![Four demo staff in the original voxel style](docs/images/character-model-low.jpg) | ![The same four demo staff with HD faces, hair and clothing](docs/images/character-model-high.jpg) |
 
 ---
 

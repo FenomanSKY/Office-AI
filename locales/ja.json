@@ -3,6 +3,9 @@
     "na": "n/a"
   },
   "strings": {
+    "model_quality": "キャラクターモデルの品質",
+    "model_low": "低 · クラシックボクセル",
+    "model_high": "高 · HDモデル",
     "office_menu": "メニュー",
     "report_batch_incomplete": "一部のレポートを更新できませんでした。もう一度お試しください。",
     "pengaturan": "設定",

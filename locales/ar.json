@@ -3,6 +3,9 @@
     "na": "غير متاح"
   },
   "strings": {
+    "model_quality": "جودة نماذج الشخصيات",
+    "model_low": "منخفضة · فوكسل كلاسيكي",
+    "model_high": "عالية · نموذج عالي الدقة",
     "office_menu": "القائمة",
     "report_batch_incomplete": "تعذّر تحديث بعض التقارير. حاول مرة أخرى.",
     "pengaturan": "الإعدادات",
