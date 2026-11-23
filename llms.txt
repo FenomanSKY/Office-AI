@@ -4,7 +4,7 @@
 > Local-first 3D voxel office (Electron + Node.js + Three.js) for monitoring AI coding agents, orchestrating multi-stage Video Short pipelines with human approval gates, hosting an embedded YouTube Studio Manager dashboard, tracking read-only MetaTrader 5 & office finances, and running direct local CLI agent prompts.
 
 ## Core Documentation
-- [README.md](README.md): Project overview, visual previews, 5-step Quick Start, feature breakdown, security guarantees, MIT license.
+- [README.md](README.md): Project overview, visual previews, 5-step Quick Start, feature breakdown, security guarantees, MIT + Commons Clause license (no selling).
 - [README.id.md](README.id.md): Indonesian mirror of README.md.
 - [AGENTS.md](AGENTS.md): Authoritative AI-agent manual — repo map, architecture, conventions, safety boundaries, and owner-adaptation guide.
 - [docs/USER_GUIDE.md](docs/USER_GUIDE.md): Complete end-user manual for every feature (English).

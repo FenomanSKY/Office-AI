@@ -7,6 +7,8 @@
 
 ![Demo Alur Sinar Cahaya Delegasi Real-Time Office AI V18](docs/images/flow_demo.gif)
 
+Karakter 3D memakai bentuk wajah, rambut, pakaian dan aksesori yang mengikuti pilihan avatar setiap agen. Kamera dekat menampilkan model terperinci. Tampilan menyeluruh dan Mode Hemat memakai geometri lebih ringan. Tekan **5** dengan pintasan bawaan untuk melihat Ruang Bos. [Lihat perbandingan model](shots/hd/perbandingan-karakter.jpg).
+
 **Cara membaca sinar alur cahaya di atas kepala** ([Cara Kerja Alur Sinar Langsung](#cara-kerja-alur-sinar-langsung)):
 - **Sinar emas bercahaya (`Bos -> Sekretaris`)**: Perintah diterima dan disalurkan langsung tanpa menahan alur, disertai pasangan denyut cahaya mengalir.
 - **Oranye-koral (`Sekretaris -> Claude`)** · **Teal-sian (`Codex`)** · **Biru safir (`Gemini`)** · **Violet elektrik (`OpenCode`)** · **Amber terang (`Hermes`)**: Agen AI utama yang sedang bekerja dengan inti sinar terang, halo lembut additive, pendaran bintang kecil di simpul, dan aliran partikel cahaya berkelanjutan sehingga garis aktif tidak pernah tampak kaku.
@@ -200,7 +202,7 @@ Alih-alih menunggu karakter berjalan membawa kertas sementara agen AI sungguhan 
 
 ## Lisensi
 
-Dirilis di bawah **Lisensi MIT** — lihat [`LICENSE`](LICENSE). Copyright (c) 2026 FenomanSKY.
+Dirilis di bawah **Lisensi MIT dengan Commons Clause** — lihat [`LICENSE`](LICENSE). Copyright (c) 2026 FenomanSKY. Boleh dipakai, disalin, diubah, dan dibagikan, tetapi **dilarang dijual** (termasuk menawarkan produk atau layanan berbayar yang nilainya berasal dari perangkat lunak ini). Ini lisensi source-available, bukan lisensi open source berstandar OSI. Komponen pihak ketiga tetap memakai lisensinya sendiri.
 
 <!-- [Diubah oleh Codex - 2026-11-21] -->
 ## Sinkron MT5 otomatis (V17)

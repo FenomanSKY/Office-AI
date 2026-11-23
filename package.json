@@ -1,7 +1,7 @@
 {
   "name": "office-ai",
   "version": "1.0.0",
-  "license": "MIT",
+  "license": "SEE LICENSE IN LICENSE",
   "author": "FenomanSKY",
   "description": "Local 3D voxel office for monitoring and orchestrating AI agents",
   "main": "main.js",

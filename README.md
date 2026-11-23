@@ -7,6 +7,8 @@
 
 ![Office AI V18 Live Glowing Overhead Delegation Beams Demo](docs/images/flow_demo.gif)
 
+Staff use articulated character models with sculpted faces, hair, garments and accessories driven by each agent’s avatar settings. Close views use detailed meshes. The overview and Economy mode use lighter meshes. Press **5** with the default shortcuts to see the Boss’s Office. [Compare the character models](shots/hd/perbandingan-karakter.jpg).
+
 **Reading the live glowing flow beams** ([How the Live Flow Works](#how-the-live-flow-works)):
 - **Luminous gold beam (`Boss -> Secretary`)**: Prompt received and routed without blocking, with paired glowing pulses streaming along the arc.
 - **Coral-orange (`Secretary -> Claude`)** · **Teal-cyan (`Codex`)** · **Sapphire blue (`Gemini`)** · **Electric violet (`OpenCode`)** · **Bright amber (`Hermes`)**: Main resident AI agent executing the task with an emissive core, soft additive halo, glowing star node flares, and continuous live transfer particles so active/working beams never look frozen.
@@ -198,7 +200,7 @@ Instead of waiting for characters to walk across the office carrying paper while
 
 ## License
 
-Released under the **MIT License** — see [`LICENSE`](LICENSE). Copyright (c) 2026 FenomanSKY.
+Released under the **MIT License with the Commons Clause** — see [`LICENSE`](LICENSE). Copyright (c) 2026 FenomanSKY. You may use, copy, modify and share it, but you may not **sell** it (including offering a paid product or service whose value derives substantially from this software). This is a source-available license, not an OSI-approved open-source license. Third-party components keep their own licenses.
 
 <!-- [Diubah oleh Codex - 2026-11-21] -->
 ## MT5 automatic sync (V17)
